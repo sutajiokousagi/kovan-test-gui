@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include <sys/ioctl.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +7,7 @@
 #include <errno.h>
 
 #ifdef linux
+#include <sys/ioctl.h>
 #include <linux/input.h>
 #endif
 
@@ -159,6 +159,7 @@ static void jtag_cleanup(struct jtag_state *state) {
 				  (((uint16_t)(x) & 0x00FF) << 8)))
 
 void HDMITest::loadFpgaFirmware(const uint8_t *bfr, ssize_t size) {
+#ifdef linux
 	int i;
 	uint16_t length;
 
@@ -261,7 +262,7 @@ void HDMITest::loadFpgaFirmware(const uint8_t *bfr, ssize_t size) {
 	close(fd);
 
 	emit testStateUpdated(TEST_INFO, 0, new QString("HDMI FPGA firmware loaded"));
-
+#endif
 	return;
 }
 
@@ -347,11 +348,11 @@ void HDMITest::loadTestFirmware()
 
 void HDMITest::runTest() {
     QString *str;
+#ifdef linux
     int fd;
 
 	loadTestFirmware();
 
-#ifdef linux
 
     fd = open("/dev/input/event0", O_RDONLY);
     struct input_event e;

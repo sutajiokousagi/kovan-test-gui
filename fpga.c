@@ -1,13 +1,16 @@
 #include <stdio.h>
-#include <sys/ioctl.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+#include <strings.h>
 
 #include "gpio.h"
 
+#ifdef WIN32
+#define bzero(x, y) memset(x, 0, y)
+#endif
 
 #define DIG_SCAN 0x45
 
@@ -28,6 +31,7 @@ static uint8_t fpga_addr = 0x1e;
 #ifdef linux
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
 int write_fpga(uint8_t start_reg, void *buffer, uint32_t bytes)
 {
 	uint8_t data[bytes+1];

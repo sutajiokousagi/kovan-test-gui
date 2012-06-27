@@ -6,13 +6,12 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <dirent.h>
-#include <sys/ioctl.h>
-
-#include <sys/utsname.h>
 
 #include "harness.h"
 
 #ifdef linux
+#include <sys/ioctl.h>
+#include <sys/utsname.h>
 #include <linux/usbdevice_fs.h>
 #include <syscall.h>
 #define init_module(mod, len, opts) syscall(__NR_init_module, mod, len, opts)

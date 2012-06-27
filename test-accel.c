@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <errno.h>
-#include <sys/ioctl.h>
 #include "harness.h"
 
 
@@ -25,6 +24,7 @@ static int is_running = THR_STOPPED;
 #ifdef linux
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
 static int i2c_get(uint8_t i2c_addr, uint8_t reg_addr, char *bfr, int sz) {
 	struct i2c_rdwr_ioctl_data packets;
 	struct i2c_msg messages[2];
@@ -82,7 +82,7 @@ static void *i2c_background(void *_ignored) {
 			snprintf(i2c_return_message, sizeof(i2c_return_message)-1,
 				"I2C failed %d times: %s", failures_in_a_row, strerror(errno));
 			is_running = THR_ERROR;
-			pthread_exit(NULL);
+            exit(0);
 		}
 		failures_in_a_row = 0;
 	}
@@ -97,10 +97,12 @@ int test_accel_start(void) {
 	strcpy(i2c_return_message, "I2C stable");
 	should_quit = 0;
 
+#ifdef linux
 	if (0 != pthread_create(&i2c_thread, NULL, i2c_background, NULL)) {
 		harness_error(0, "Unable to create I2C thread");
 		return 1;
 	}
+#endif
 	harness_info(0, "Created I2C background thread");
 	return 0;
 }

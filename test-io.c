@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <sys/ioctl.h>
 #include <stdint.h>
 #include <unistd.h>
 #include "fpga.h"

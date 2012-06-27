@@ -1,4 +1,5 @@
 #include "wifitest.h"
+#include <unistd.h>
 #include <Qt/QtNetwork>
 #include <QApplication>
 
@@ -116,7 +117,7 @@ void WifiTest::runTest() {
     finished = false;
     error = false;
     while (finished == false)
-        sleep(1);
+        usleep(1*1000*1000);
     file->close();
 
     if (error) {

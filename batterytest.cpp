@@ -39,7 +39,7 @@ BatteryTestStop::BatteryTestStop()
 
 
 void BatteryTestStop::runTest() {
-        uint32_t battery_level;
+    uint32_t battery_level = 0;
 	QString *str;
 
 	str = new QString("Waiting for AC to be attached...");

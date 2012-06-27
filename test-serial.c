@@ -4,14 +4,19 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
-#include <termios.h>
 
 #include "harness.h"
 
 #define EXT_DEV_NAME "/dev/ttyS2"
 #define INT_DEV_NAME "/dev/ttyS0"
 
+#ifdef linux
+#include <termios.h>
+#endif
+
 int test_serial(void) {
+
+#ifdef linux
 	int ext_fd = 0;
 	int int_fd = 0;
 	int ret = 0;
@@ -156,4 +161,7 @@ out:
 	}
 
 	return ret;
+#else
+    return 0;
+#endif
 }
