@@ -70,6 +70,7 @@ int MotorTest::testMotorNumber(int motor)
 
     setDutyCycle(0);
 
+    // Ramp up the motor
     setMotorDirection(motor, MOT_FORWARD);
     for (level=0; level<100; level+=10) {
         setDutyCycle(dutyFromPercent(level));
@@ -82,16 +83,11 @@ int MotorTest::testMotorNumber(int motor)
     emf1 = read_adc(motor*2);
     emf2 = read_adc(motor*2+1);
     str = new QString();
-    if ( (emf1 < 470 || emf1 > 560) && (emf2 < 470 || emf2 > 560) ) {
-        str->sprintf("Motor %d forwards nominal: %d/%d", motor, emf1, emf2);
-        emit testStateUpdated(TEST_INFO, motor, str);
-    }
-    else {
-        str->sprintf("Motor %d forwards out of range: %d/%d", motor, emf1, emf2);
-        emit testStateUpdated(TEST_ERROR, motor, str);
-    }
+    str->sprintf("Motor %d forwards nominal: %d/%d", motor, emf1, emf2);
+    emit testStateUpdated(TEST_INFO, motor, str);
 
 
+    // Ramp it back down
     for (level=100; level>=0; level-=10) {
         setDutyCycle(dutyFromPercent(level));
         usleep(100000);
@@ -111,14 +107,8 @@ int MotorTest::testMotorNumber(int motor)
     emf1 = read_adc(motor*2);
     emf2 = read_adc(motor*2+1);
     str = new QString();
-    if ( (emf1 < 470 || emf1 > 560) && (emf2 < 470 || emf2 > 560) ) {
-        str->sprintf("Motor %d reverse nominal: %d/%d", motor, emf1, emf2);
-        emit testStateUpdated(TEST_INFO, motor, str);
-    }
-    else {
-        str->sprintf("Motor %d reverse out of range: %d/%d", motor, emf1, emf2);
-        emit testStateUpdated(TEST_ERROR, motor, str);
-    }
+    str->sprintf("Motor %d reverse nominal: %d/%d", motor, emf1, emf2);
+    emit testStateUpdated(TEST_INFO, motor, str);
 
 
     for (level=100; level>=0; level-=10) {
