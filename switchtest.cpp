@@ -2,6 +2,7 @@
 #include <QString>
 #include <string.h>
 #include <errno.h>
+#include <unistd.h>
 
 #ifdef linux
 #include <linux/input.h>

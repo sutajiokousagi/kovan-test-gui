@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "batterytest.h"
 #include "fpga.h"
 #include "gpio.h"

@@ -1,7 +1,7 @@
-#include "wifitest.h"
 #include <unistd.h>
 #include <Qt/QtNetwork>
 #include <QApplication>
+#include "wifitest.h"
 
 
 //#define FILE_URL "http://edmond.local/~smc/bigfile.bin"
